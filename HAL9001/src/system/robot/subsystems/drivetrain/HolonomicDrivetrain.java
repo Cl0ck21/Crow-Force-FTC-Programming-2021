@@ -96,11 +96,7 @@ public abstract class HolonomicDrivetrain extends Drivetrain {
      * @param power The power to move at.
      */
     public final void movePower(Vector2D power) {
-        Vector2D transformedPower = power.clone();
-        if(coordinateMode == CoordinateMode.HAL) {
-            transformedPower.rotate(-PI/2);
-        }
-        movePowerInternal(modifyPower(transformedPower));
+        movePowerInternal(modifyPower(power));
     }
 
     /**

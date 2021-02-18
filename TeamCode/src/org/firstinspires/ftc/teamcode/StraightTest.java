@@ -1,33 +1,35 @@
 package org.firstinspires.ftc.teamcode;
 
+//import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import system.config.StandAlone;
-import system.robot.BaseAutonomous;
-import system.robot.MainRobot;
-import system.robot.roadrunner_util.HALTrajectory;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@StandAlone
-@Autonomous(name = "Straight Test")
-public class StraightTest extends BaseAutonomous {
-    public @MainRobot RoadrunnerCalibBot robot;
+import static java.lang.Math.PI;
 
+
+/*
+ * This is a simple routine to test translational drive capabilities.
+ */
+//@Config
+@Autonomous(name = "StraightTest", group = "drive")
+public class StraightTest extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
     @Override
-    public void main() {
-        HALTrajectory trajectory = robot.drive.trajectoryBuilder(new Pose2d())
-                .forward(DISTANCE)
+    public void runOpMode() throws InterruptedException {
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+        Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
+                .splineTo(new Vector2d(10,10),PI/2)
                 .build();
 
-        robot.drive.followTrajectory(trajectory);
+        waitForStart();
 
-        Pose2d poseEstimate = robot.drive.getPoseEstimate();
-        robot.telemetry.addData("finalX", poseEstimate.getX());
-        robot.telemetry.addData("finalY", poseEstimate.getY());
-        robot.telemetry.addData("finalHeading", poseEstimate.getHeading());
-        robot.telemetry.update();
+        if (isStopRequested()) return;
 
-        waitUntil(()->robot.isStopRequested());
+        drive.followTrajectory(trajectory);
     }
 }

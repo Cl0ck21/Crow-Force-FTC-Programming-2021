@@ -18,7 +18,7 @@ public class RoadrunnerCalibBot extends Robot {
         super(opMode);
 
         drive = new MecanumDrive(this,
-                new RoadrunnerConfig(2,1,15,1120,133.9),
+                new RoadrunnerConfig(1.88976,2,13.359,383.6,435),
                 "front_left_motor",
                 "front_right_motor",
                 "back_left_motor",

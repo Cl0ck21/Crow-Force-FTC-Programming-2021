@@ -210,8 +210,8 @@ public abstract class Drivetrain extends SubSystem {
     /**
      * Sets the motor PIDF coefficients and runmode for all drivetrain motors.
      *
-     * @param runMode The runmode of the motor.
-     * @param pidfCoefficients The motor's PIDF coefficients.
+     * @param runMode
+     * @param pidfCoefficients
      */
     public final void setMotorPIDFCoefficients(DcMotor.RunMode runMode, @NotNull PIDFCoefficients pidfCoefficients) {
         PIDFCoefficients compensatedCoefficients = new PIDFCoefficients(
@@ -302,7 +302,7 @@ public abstract class Drivetrain extends SubSystem {
      * @return That motor's velocity.
      */
     public double getMotorVelocity(String motorName) {
-        return getMotor(motorName).getVelocity();
+        return getMotorVelocity(motorName, HALAngleUnit.RADIANS);
     }
 
     /**
@@ -370,14 +370,14 @@ public abstract class Drivetrain extends SubSystem {
      * Counterclockwise is positive, clockwise is negative.
      *
      * @param power The power to turn at.
-     * @param angleRadians The angle to turn by in radians.
+     * @param amount The amount to turn.
      */
-    public final void turnSimple(double power, double angleRadians) {
+    public final void turnSimple(double power, double amount) {
         Pose2d initialPose = localizer.getPoseEstimate();
 
         if(power != 0) {
-            turnPower(angleRadians < 0 ? -power : power);
-            waitWhile(() -> abs(localizer.getPoseEstimate().getHeading() - initialPose.getHeading()) < abs(angleRadians), () -> {
+            turnPower(amount < 0 ? -power : power);
+            waitWhile(() -> abs(localizer.getPoseEstimate().getHeading() - initialPose.getHeading()) < abs(amount), () -> {
                 localizer.update();
                 System.out.println(localizer.getPoseEstimate());
             });
@@ -588,15 +588,6 @@ public abstract class Drivetrain extends SubSystem {
     }
 
     /**
-     * Gets the localizer used to track the robot's position.
-     *
-     * @return The localizer used to track the robot's position.
-     */
-    public final Localizer getLocalizer() {
-        return localizer;
-    }
-
-    /**
      * Sets the drivetrain coordinate mode (which changes whether entered commands are interpreted using the roadrunner or HAL coordinate systems).
      *
      * @param coordinateMode The desired drivetrain coordinate mode.
@@ -612,32 +603,7 @@ public abstract class Drivetrain extends SubSystem {
      */
     @NotNull
     public final Pose2d getPoseEstimate() {
-        return localizerCoordinateMode.convertTo(coordinateMode).apply(localizer.getPoseEstimate());
-    }
-
-    /**
-     * Sets the localizer pose estimate.
-     *
-     * @param poseEstimate The localizer pose estimate.
-     */
-    public final void setPoseEstimate(Pose2d poseEstimate) {
-        localizer.setPoseEstimate(coordinateMode.convertTo(localizerCoordinateMode).apply(poseEstimate));
-    }
-
-    /**
-     * Gets the localizer estimated pose velocity.
-     *
-     * @return The localizer estimated pose velocity.
-     */
-    public final Pose2d getPoseVelocity() {
-        return localizerCoordinateMode.convertTo(coordinateMode).apply(localizer.getPoseVelocity());
-    }
-
-    /**
-     * Updates the localizer.
-     */
-    public final void updateLocalizer() {
-        localizer.update();
+        return localizer.getPoseEstimate();
     }
 
     /**
