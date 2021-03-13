@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.teamcode.OpModes.Autonomous;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
-
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.teamcode.Robots.MainRobot;
@@ -15,7 +13,6 @@ import util.math.geometry.Vector2D;
 import util.math.units.HALAngleUnit;
 import util.math.units.HALDistanceUnit;
 
-
 import java.text.DecimalFormat;
 import java.io.*;
 import java.util.*;
@@ -24,7 +21,6 @@ import static java.lang.Math.PI;
 import static java.lang.Math.pow;
 import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
-
 
 @StandAlone
 @Autonomous(name = "Autonomouss")
